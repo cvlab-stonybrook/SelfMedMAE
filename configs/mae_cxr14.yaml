@@ -1,0 +1,72 @@
+# architecture
+arch: vit_base
+enc_arch: MAEViTEncoder
+dec_arch: MAEViTDecoder
+
+# wandb
+proj_name: mae
+run_name: ${proj_name}_${arch}_${dataset}
+wandb_id:
+
+# dataset
+dataset: cxr14
+data_path: /home/leizhou/covid_proj/data/chestxray8/images_hiseq256
+tr_listfile: /home/leizhou/covid_proj/data/chestxray8/trainval_list.txt
+va_listfile: /home/leizhou/covid_proj/data/chestxray8/test_list.txt
+
+# output
+output_dir: /nfs/bigdisk/leizhou/ssl-v2/${run_name}
+ckpt_dir: ${output_dir}/ckpts
+
+# data preprocessing
+mean_std_type: MED
+crop_min: 0.08
+
+# trainer
+trainer_name: MAETrainer
+lr: 1.5e-4
+batch_size: 256
+vis_batch_size: 4
+start_epoch: 0
+warmup_epochs: 40
+epochs: 800
+workers: 32
+resume:
+
+# model
+mask_ratio: 0.75
+input_size: 224
+patch_size: 16
+in_chans: 3
+encoder_embed_dim: 768
+encoder_depth: 12
+encoder_num_heads: 12
+decoder_embed_dim: 256
+decoder_depth: 8
+decoder_num_heads: 8
+
+# optimizer
+type: adamw
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.05
+
+# logging
+save_freq: 10
+print_freq: 20
+
+# distributed processing
+gpu:
+dist_url: 'tcp://localhost:10004'
+world_size: 1
+multiprocessing_distributed: true
+dist_backend: nccl
+distributed:
+rank: 0
+ngpus_per_node:
+
+# randomness
+seed:
+
+# debugging
+debug: false

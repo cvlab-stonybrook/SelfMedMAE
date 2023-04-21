@@ -1,0 +1,79 @@
+# architecture
+arch: vit_base_patch16_224
+
+# wandb
+proj_name: ${arch}_ft
+run_name: ${proj_name}_${dataset}
+wandb_id:
+
+# dataset
+dataset: im100
+data_path: /data/add_disk0/leizhou/imagenet100/images
+tr_listfile: /nfs/bigcornea/add_disk0/leizhou/imagenet100/sorted_train_list.txt
+va_listfile: /nfs/bigcornea/add_disk0/leizhou/imagenet100/sorted_val_list.txt
+
+# output
+output_dir: /nfs/bigdisk/leizhou/ssl-v2/${run_name}
+ckpt_dir: ${output_dir}/ckpts
+
+# data preprocessing
+mean_std_type: IMN
+crop_min: 0.08
+randaug: rand-m9-mstd0.5-inc1
+
+# trainer
+trainer_name: VitTrainer
+batch_size: 256
+start_epoch: 0
+warmup_epochs: 5
+epochs: 100
+workers: 32
+pretrain:
+resume:
+
+# drop
+drop_path: 0.1
+
+# mixup
+mixup: 0.8
+cutmix: 1.0
+label_smoothing: 0.1
+
+# model
+adjust_posemb_rate: False
+mask_ratio: 0.75
+input_size: 224
+patch_size: 16
+in_chans: 3
+
+# optimizer
+type: adamw
+lr: 1e-3
+beta1: 0.9
+beta2: 0.999
+weight_decay: 0.05
+layer_decay: 0.75
+
+# eval
+eval_metric: acc
+eval_freq: 1
+
+# logging
+save_freq: 10
+print_freq: 20
+
+# distributed processing
+gpu:
+dist_url: 'tcp://localhost:10006'
+world_size: 1
+multiprocessing_distributed: true
+dist_backend: nccl
+distributed:
+rank: 0
+ngpus_per_node:
+
+# randomness
+seed:
+
+# debugging
+debug: false

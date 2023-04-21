@@ -1,0 +1,96 @@
+# architecture
+arch: vit_base
+enc_arch: ViTBackbone
+dec_arch: UNETR_decoder
+
+# wandb
+proj_name: UNETR3D
+run_name: ${proj_name}_${arch}_${dataset}
+wandb_id:
+disable_wandb: 0
+
+# dataset
+dataset: msd_brats
+# data_path: /data/leizhou/
+data_path: /nvme/zhoulei/MSD
+data_seed: 12345
+ts_fold: 0
+ts_ratio: 0.
+
+# output
+output_dir: /nvme/zhoulei/ssl-framework/${run_name}
+ckpt_dir: ${output_dir}/ckpts
+
+# data preprocessing
+roi_x: 128
+roi_y: 128
+roi_z: 128
+RandFlipd_prob: 0.2
+RandRotate90d_prob: 0.2
+RandScaleIntensityd_prob: 0.1
+RandShiftIntensityd_prob: 0.1
+infer_overlap: 0.5
+spatial_dim: 3
+cache_rate: 1.
+num_samples: 1
+
+# trainer
+trainer_name: SegTrainer
+batch_size: 6
+val_batch_size: 1 # per gpu
+start_epoch: 0
+warmup_epochs: 10
+epochs: 400
+workers: 8
+pretrain:
+resume:
+
+# drop
+drop_path: 0.1
+# tricks
+mixup: 0.
+cutmix: 0.
+label_smoothing: 0.
+
+# model
+patch_size: 16
+in_chans: 4
+feature_size: 16
+encoder_embed_dim: 768
+encoder_depth: 12
+encoder_num_heads: 12
+
+# loss
+smooth_nr: 0.0
+smooth_dr: 1e-6
+
+# optimizer
+type: adamw
+lr: 3.44e-2
+beta1: 0.9
+beta2: 0.95 #0.999
+weight_decay: 0.05 #1e-5
+layer_decay: 0.75
+
+# logging
+# vis_freq: 100
+vis_batch_size: 4
+save_freq: 10
+eval_freq: 10
+print_freq: 5
+
+# distributed processing
+gpu: 0
+dist_url: # 'tcp://localhost:10001'
+world_size: 1
+multiprocessing_distributed: false
+dist_backend: nccl
+distributed:
+rank: 0
+ngpus_per_node:
+
+# randomness
+seed:
+
+# debugging
+debug: false

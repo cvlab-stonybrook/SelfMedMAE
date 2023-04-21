@@ -1,0 +1,106 @@
+# architecture
+arch: vit_base
+enc_arch: ViTBackbone
+dec_arch: UNETR_decoder
+
+# wandb
+proj_name: UNETR3D
+run_name: ${proj_name}_${arch}_${dataset}
+wandb_id:
+disable_wandb: 0
+
+# dataset
+dataset: btcv
+json_list: 'transunet.json'
+data_path: /nvme/zhoulei/BTCV
+
+# output
+output_dir: /nvme/zhoulei/ssl-framework/${run_name}
+ckpt_dir: ${output_dir}/ckpts
+
+# data preprocessing
+space_x: 1.5
+space_y: 1.5
+space_z: 2.0
+a_min: -175.0
+a_max: 250.0
+b_min: 0.0
+b_max: 1.0
+roi_x: 96
+roi_y: 96
+roi_z: 96
+RandFlipd_prob: 0.2
+RandRotate90d_prob: 0.2
+RandScaleIntensityd_prob: 0.1
+RandShiftIntensityd_prob: 0.1
+infer_overlap: 0.5
+spatial_dim: 3
+num_samples: 4
+
+# trainer
+trainer_name: SegTrainer
+batch_size: 6
+val_batch_size: 1 # per gpu
+start_epoch: 0
+warmup_epochs: 50
+epochs: 5000
+workers: 8
+pretrain:
+resume:
+
+# drop
+drop_path: 0.1
+# tricks
+mixup: 0.
+cutmix: 0.
+label_smoothing: 0.
+
+# model
+# patchembed: 'PatchEmbed3D'
+# pos_embed_type: 'sincos'
+# mask_ratio: 0.75
+# input_size: ${roi_x}
+patch_size: 16
+in_chans: 1
+feature_size: 16
+encoder_embed_dim: 768
+encoder_depth: 12
+encoder_num_heads: 12
+# decoder_embed_dim: 384
+# decoder_depth: 8
+# decoder_num_heads: 12
+
+# loss
+smooth_nr: 0.0
+smooth_dr: 1e-6
+
+# optimizer
+type: adamw
+lr: 4.3e-3
+beta1: 0.9
+beta2: 0.95 #0.999
+weight_decay: 0.05 #1e-5
+layer_decay: 0.75
+
+# logging
+# vis_freq: 100
+vis_batch_size: 4
+save_freq: 1000
+eval_freq: 100
+print_freq: 1
+
+# distributed processing
+gpu: 0
+dist_url: # 'tcp://localhost:10001'
+world_size: 1
+multiprocessing_distributed: false
+dist_backend: nccl
+distributed:
+rank: 0
+ngpus_per_node:
+
+# randomness
+seed:
+
+# debugging
+debug: false

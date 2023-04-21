@@ -1,0 +1,83 @@
+# architecture
+arch: vit_base
+enc_arch: MAEViTEncoder
+dec_arch: MAEViTDecoder
+
+# wandb
+proj_name: mae3d
+run_name: ${proj_name}_${arch}_${dataset}
+wandb_id:
+
+# dataset
+dataset: msd_brats
+data_path: /nvme/zhoulei/MSD
+data_seed: 12345
+ts_fold: 0
+
+# output
+output_dir: /nvme/zhoulei/ssl-framework/${run_name}
+ckpt_dir: ${output_dir}/ckpts
+
+# data preprocessing
+roi_x: 128
+roi_y: 128
+roi_z: 128
+RandFlipd_prob: 0.2
+RandRotate90d_prob: 0.2
+RandScaleIntensityd_prob: 0.1
+RandShiftIntensityd_prob: 0.1
+spatial_dim: 3
+cache_rate: 1.
+
+# trainer
+trainer_name: MAE3DTrainer
+batch_size: 6
+vis_batch_size: 1
+start_epoch: 0
+warmup_epochs: 10
+epochs: 1000
+workers: 8
+pretrain:
+resume:
+
+# model
+patchembed: 'PatchEmbed3D'
+pos_embed_type: 'sincos'
+mask_ratio: 0.75
+input_size: ${roi_x}
+patch_size: 16
+in_chans: 4
+encoder_embed_dim: 768
+encoder_depth: 12
+encoder_num_heads: 12
+decoder_embed_dim: 384
+decoder_depth: 8
+decoder_num_heads: 12
+
+# optimizer
+type: adamw
+lr: 6.4e-3
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.05
+
+# logging
+vis_freq: 10
+save_freq: 100
+print_freq: 5
+
+# distributed processing
+gpu: 0
+dist_url: # 'tcp://localhost:10001'
+world_size: 1
+multiprocessing_distributed: false
+dist_backend: nccl
+distributed:
+rank: 0
+ngpus_per_node:
+
+# randomness
+seed:
+
+# debugging
+debug: false
