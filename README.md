@@ -1,4 +1,4 @@
-# MedMAE: Self Pre-training with Masked Autoencoders for Medical Image Analysis
+# SelfMedMAE: Self Pre-training with Masked Autoencoders for Medical Image Analysis
 
 ### Preparation
 
