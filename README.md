@@ -1,5 +1,15 @@
 # SelfMedMAE: Self Pre-training with Masked Autoencoders for Medical Image Analysis
 
+### Necessary Packages and Versions
+```
+pytorch=1.7.1=py3.8_cuda10.1.243_cudnn7.6.3_0
+torchvision=0.8.2=py38_cu101
+monai-weekly==0.9.dev2152
+nibabel==3.2.1
+omegaconf==2.1.1
+timm==0.4.12
+```
+
 ### Preparation
 
 1. Install PyTorch, timm and [MONAI](https://monai.io/index.html).
